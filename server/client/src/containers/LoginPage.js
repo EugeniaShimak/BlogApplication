@@ -61,20 +61,11 @@ export default function Login() {
     const classes = useStyles();
     const [signIn, setSignIn] = useState(true);
 
-    function openSignUp() {
-        setSignIn(false);
-        debugger
-    }
+    function signInUser(){
 
-    function openSignIn() {
-        setSignIn(true);
-        debugger
-    }
-
-    function loginUser(){
        debugger
     }
-    function registrationUser(){
+    function signUpUser(){
         debugger
     }
 
@@ -90,7 +81,7 @@ export default function Login() {
                     <Typography component="h1" variant="h5">
                         {signIn ? "Sign in" : "Sign up"}
                     </Typography>
-                    <form className={classes.form} onSubmit={signIn ? loginUser : registrationUser} noValidate>
+                    <form className={classes.form} onSubmit={signIn ? signInUser : signUpUser} noValidate>
                         {signIn &&
                         <>
                             <TextField
@@ -167,10 +158,6 @@ export default function Login() {
                             </Grid>
                         </Grid>
                         }
-                        {/*<FormControlLabel*/}
-                        {/*control={<Checkbox value="remember" color="primary" />}*/}
-                        {/*label="Remember me"*/}
-                        {/*/>*/}
                         <Button
                             type="submit"
                             fullWidth
@@ -180,21 +167,11 @@ export default function Login() {
                         >
                             Sign In
                         </Button>
-                        {/*<Grid container>*/}
-                        {/*<Grid item xs>*/}
-                        {/*<Link href="#" variant="body2">*/}
-                        {/*Forgot password?*/}
-                        {/*</Link>*/}
-                        {/*</Grid>*/}
                         <Grid item>
-                            <div style={{color: "#3f51b5"}} onClick={signIn ? openSignUp : openSignIn}>
+                            <div style={{color: "#3f51b5"}} onClick={()=> setSignIn(!signIn)}>
                                 {signIn ? "Don't have an account? Sign Up" : "Already have an account? Sign in"}
                             </div>
                         </Grid>
-                        {/*</Grid>*/}
-                        {/*<Box mt={5}>*/}
-                        {/*<Copyright />*/}
-                        {/*</Box>*/}
                     </form>
                 </div>
             </Grid>

@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
-var usersRouter = require('./routes/usersRouter');
+// var usersRouter = require('./routes/usersRouter');
 var postsRouter = require('./routes/postsRouter');
 
 
@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 
 
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
 
 

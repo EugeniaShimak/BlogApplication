@@ -3,7 +3,6 @@ var PostsRouter = express.Router();
 
 
 var PostsController = require('../controllers/PostsController');
-
 PostsRouter.get('/', PostsController.getAllPosts);
 PostsRouter.get('/:userId', PostsController.getAllPostsByUser);
 PostsRouter.get('/post/:postId', PostsController.getPost);

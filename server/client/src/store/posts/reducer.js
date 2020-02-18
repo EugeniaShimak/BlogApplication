@@ -6,6 +6,8 @@ const initialState = Immutable({
     allPosts:null,
     allPostsByUser: null,
     showPostsByUser:false,
+    post:null,
+    newPost:null
     // postById:undefined,
 });
 
@@ -17,12 +19,20 @@ export default function reduce(state = initialState, action = {}) {debugger
             });
         case types.POSTS_SELECTED_BY_USER:
             return state.merge({
-                allPostsByUser: action.allPostsByUser
+                allPostsByUser: action.postsByUser
             });
         case types.SHOW_POSTS_BY_USER:
             return state.merge({
                 showPostsByUser: action.showPostsByUser
             });
+        case types.CHANGE_POST:
+            return state.merge({
+                post: action.post
+            });
+        case types.CHANGE_NEW_POST:
+                return state.merge({
+                    newPost: action.newPost
+                });
         // case types.POST_SELECTED:
         //     return state.merge({
         //         postById: action.postById
@@ -43,6 +53,12 @@ export function allPostsByUser(state) {debugger
 
 export function showPostsByUser(state) {debugger
     return state.posts.showPostsByUser;
+}
+export function getPost(state) {debugger
+    return state.posts.post;
+}
+export function getNewPost(state) {debugger
+    return state.posts.newPost;
 }
 
 

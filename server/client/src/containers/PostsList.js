@@ -4,6 +4,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import * as postsActions from '../store/posts/actions';
 import * as postsSelectors from '../store/posts/reducer';
+import Loading from "../components/Loading";
+import PostView from "../components/PostView";
 
 
 class PostsList extends React.Component {
@@ -11,55 +13,68 @@ class PostsList extends React.Component {
     constructor(props) {
         debugger
         super(props);
+        this.state = {
+            newPostText: ''
+        }
     }
 
     componentDidMount() {
         debugger
         this.props.dispatch(postsActions.fetchPosts());
-        //this.props.dispatch(postsActions.getPostsByUser());
     }
 
-    showAllPosts=()=>{
+    showAllPosts = () => {
         debugger
-        if (!this.props.allPosts){
-
-        }
         this.props.dispatch(postsActions.changeShowPostsByUser(false));
+    }
+
+    showPostsByUser = () => {
+        debugger
+        if (!this.props.postsByUser) {
+            this.props.dispatch(postsActions.getPostsByUser(1))
+        }
+        this.props.dispatch(postsActions.changeShowPostsByUser(true));
+    }
+
+
+    renderPostList = (title, posts, buttonText, buttonAction) => {
+        return <div className="PostsScreen">
+            <h3>{title}</h3>
+            <PostView posts={posts} delete={(post)=>{debugger;this.props.dispatch(postsActions.deletePost(post)) }} update={()=>this.props.dispatch(postsActions.updatePost)}/>
+            <button onClick={() => buttonAction()}>{buttonText}</button>
+        </div>
+    }
+
+    savePost=(post)=>{
+        debugger
+        this.props.dispatch(postsActions.savePost(post))
+    }
+
+    changePost=(post)=>{debugger
+        this.props.dispatch(postsActions.changePost(post));
+    }
+
+    changeNewPost=(post)=>{debugger
+        this.props.dispatch(postsActions.changeNewPost(post));
     }
 
     render() {
         debugger
-        if (!this.props.allPosts) return this.renderLoading();
+        if (!this.props.allPosts) return <Loading/>;
         return (
             <div>
                 {this.props.showPostsByUser ?
-                    <div className="PostsScreen">
-                        <h3>Стаьи по юзеру</h3>
-                       <ul>
-                           {this.props.postsByUser.map(post=>{
-                               return <li>{post.text+', user = '+post.userId}</li>
-                           })}
-                       </ul>
-                        <button onClick={this.showAllPosts}/>
-                    </div>
-               : <div className="PostsScreen">
-                    <h3>Все статьи</h3>
-                        <ul>
-                            {this.props.allPosts.map(post=>{
-                                return <li>{post.text+', user = '+post.userId}</li>
-                            })}
-                        </ul>
-                        <button onClick={this.showPostsByUser}/>
-                </div>}
+                    this.props.allPostsByUser && this.renderPostList('Стаьи по юзеру', this.props.allPostsByUser, 'Показать все статьи', this.showAllPosts) :
+                    this.renderPostList('Все статьи', this.props.allPosts, 'Показать по юзеру', () => this.showPostsByUser(6))
+                }
+                <br/>
+                <input value={this.props.newPost&&this.props.newPost.text||''} onChange={(e) => this.changeNewPost({text:e.target.value, userId:1})}/>
+                <button onClick={() => {
+                    this.savePost(this.props.newPost)
+                }}>добавить пост
+                </button>
             </div>
         )
-    }
-
-    renderLoading=()=> {
-        debugger
-        return (
-            <p>Loading...</p>
-        );
     }
 }
 
@@ -67,9 +82,11 @@ class PostsList extends React.Component {
 function mapStateToProps(state) {
     debugger
     return {
-        postsByUser: postsSelectors.allPostsByUser(state),
+        allPostsByUser: postsSelectors.allPostsByUser(state),
         allPosts: postsSelectors.getAllPosts(state),
         showPostsByUser: postsSelectors.showPostsByUser(state),
+        post:postsSelectors.getPost(state),
+        newPost:postsSelectors.getNewPost(state)
     };
 
 }

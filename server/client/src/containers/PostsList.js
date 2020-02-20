@@ -40,7 +40,13 @@ class PostsList extends React.Component {
     renderPostList = (title, posts, buttonText, buttonAction) => {
         return <div className="PostsScreen">
             <h3>{title}</h3>
-            <PostView posts={posts} delete={(post)=>{debugger;this.props.dispatch(postsActions.deletePost(post)) }} update={()=>this.props.dispatch(postsActions.updatePost)}/>
+            <PostView
+                posts={posts}
+                delete={(post)=>{debugger;this.props.dispatch(postsActions.deletePost(post)) }}
+                update={(post)=>this.props.dispatch(postsActions.updatePost(post))}
+                change={(post)=>this.changePost(post)}
+                currentPost = {this.props.post||{}}
+            />
             <button onClick={() => buttonAction()}>{buttonText}</button>
         </div>
     }

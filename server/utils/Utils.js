@@ -14,6 +14,7 @@ class Utils {
     }
 
     setError(statusCode, message) {
+        console.log('message =',message)
         this.statusCode = statusCode;
         this.message = message;
         this.type = 'error';
@@ -29,9 +30,10 @@ class Utils {
         if (this.type === 'success') {
             return res.status(this.statusCode).json(result);
         }
+        console.log('msg =', this.message)
         return res.status(this.statusCode).json({
             status: this.type,
-            message: this.message,
+            message:String(this.message) ,
         });
     }
 }

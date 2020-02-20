@@ -71,7 +71,9 @@ export function savePost(post) {debugger
     return async(dispatch, getState) => {
         try {
             const result = await postService.savePost(post);
-            dispatch({ type: types.CHANGE_POST, post:null });
+            // post.hasOwnProperty('id')?
+            // dispatch({ type: types.CHANGE_POST, post:null }):
+                dispatch({ type: types.CHANGE_NEW_POST, newPost:null })
             dispatch(getAllPostsAndPostsByUser(post.userId))
         } catch (error) {
             console.error(error);
@@ -94,7 +96,10 @@ export function deletePost(post) {debugger
 export function updatePost(post) {debugger
     return async(dispatch, getState) => {
         try {
-            const result = await postService.updatePost(post);
+            if (post){
+                const result = await postService.updatePost(post);
+            }
+            dispatch({ type: types.CHANGE_POST, post:null })
             dispatch(getAllPostsAndPostsByUser(post.userId))
         } catch (error) {
             console.error(error);

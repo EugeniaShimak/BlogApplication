@@ -78,7 +78,7 @@ class PostService {
         const response = await fetch(url+'/'+post.id, {
             method: 'PUT',
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
             body:JSON.stringify(post)

@@ -32,10 +32,10 @@ class PostsController {
     static async getAllPostsByUser(req, res) {
         console.log('getAllPostsByUser')
         try {
-            const allPosts =JSON.parse(await readPostUser());
+            const allPosts = JSON.parse(await readPostUser());
             console.log('allPosts', allPosts)
             console.log('req.params.userId', req.params.userId)
-            let postsByUserId =allPosts.filter(post => String(post.userId) === req.params.userId);
+            let postsByUserId = allPosts.filter(post => String(post.userId) === req.params.userId);
             console.log('postsByUserId', postsByUserId);
             if (postsByUserId.length > 0) {
                 util.setSuccess(200, 'Posts retrieved', postsByUserId);
@@ -52,21 +52,21 @@ class PostsController {
 
     static async addPost(req, res) {
         console.log('addPost')
-        console.log('req.body.text = ',req.body.text, ' req.body.userId =', req.body.userId)
+        console.log('req.body.text = ', req.body.text, ' req.body.userId =', req.body.userId)
         if (!req.body.text || !req.body.userId) {
             util.setError(400, 'Please provide complete details');
             return util.send(res);
         }
         let newPost = req.body;
-      console.log('newPost =', newPost)
+        console.log('newPost =', newPost)
         newPost.id = String(Math.random());
         console.log('newPost =', newPost)
         try {
-            const allPosts =JSON.parse(await readPostUser());
+            const allPosts = JSON.parse(await readPostUser());
             allPosts.push(newPost);
             console.log('allPosts after push =', allPosts)
-           let aa =  await writeFilePostUser(allPosts);
-            util.setSuccess(201, 'Post Added!',aa);
+            let aa = await writeFilePostUser(allPosts);
+            util.setSuccess(201, 'Post Added!', aa);
             return util.send(res);
         } catch (error) {
             console.log(error)
@@ -76,10 +76,9 @@ class PostsController {
     }
 
     static async updatePost(req, res) {
-        console.log('updatePost')
         const {postId} = req.params;
         try {
-            const allPosts = await readPostUser();
+            const allPosts = JSON.parse(await readPostUser());
             let wasUpdate = false;
             allPosts.forEach(post => {
                 if (String(post.id) === postId) {
@@ -90,7 +89,7 @@ class PostsController {
             if (!wasUpdate) {
                 util.setError(404, `Cannot find post with the id: ${postId}`);
             } else {
-                await writeFile('../posts.json', allPosts);
+                let result = await writeFilePostUser(allPosts);
                 util.setSuccess(200, 'Post updated');
             }
             return util.send(res);
@@ -121,13 +120,13 @@ class PostsController {
     static async deletePost(req, res) {
         console.log('deletePost')
         const {postId} = req.params;
-        console.log('postId = ',postId);
+        console.log('postId = ', postId);
         try {
-            const allPosts =JSON.parse(await readPostUser());
-           let newArrayPosts =  allPosts.filter((post)=>String(post.id)!==String(postId));
+            const allPosts = JSON.parse(await readPostUser());
+            let newArrayPosts = allPosts.filter((post) => String(post.id) !== String(postId));
             console.log('allPosts after delete =', newArrayPosts)
-            let aa =  await writeFilePostUser(newArrayPosts);
-            util.setSuccess(201, 'Post Deleted!',aa);
+            let aa = await writeFilePostUser(newArrayPosts);
+            util.setSuccess(201, 'Post Deleted!', aa);
             return util.send(res);
         } catch (error) {
             console.log(error)
